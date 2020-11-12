@@ -82,7 +82,17 @@ public class TestClient{
 
     }
 
-    // send message to queue with a content
+    # Send message to queue with a content
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + queuePath - Entitypath to the message broker resource
+    # + content - MessageBody content
+    # + return - An `Error` if an I/O error is encountered or else `()`
     public function sendToQueue(string connectionString, string queuePath, string content) returns error? {
         var s = send(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content));
     }
