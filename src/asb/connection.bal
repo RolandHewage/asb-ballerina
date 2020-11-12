@@ -92,22 +92,50 @@ public class TestClient{
     #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
     # + queuePath - Entitypath to the message broker resource
     # + content - MessageBody content
-    # + return - An `Error` if an I/O error is encountered or else `()`
+    # + return - An `asb:Error` if failed to send message or else `()`
     public function sendToQueue(string connectionString, string queuePath, string content) returns error? {
         var s = send(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content));
     }
 
-    // receive message from queue and display content
+    # Receive message from queue and display content
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + queuePath - Entitypath to the message broker resource
+    # + return - An `asb:Error` if failed to read message or else `()`
     public function readFromQueue(string connectionString, string queuePath) returns error? {
         var r = receive(java:fromString(connectionString),java:fromString(queuePath));
     }
 
-    // publish message to topic with a content
+    # Publish message to topic with a content
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + topicPath - Entitypath to the message broker resource
+    # + content - MessageBody content
+    # + return - An `asb:Error` if failed to send message or else `()`
     public function sendToTopic(string connectionString, string topicPath, string content) returns error? {
         var s = send(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content));
     }
 
-    // receive subscribe message to subscriptions and display content
+    # Receive subscribe message to subscriptions and display content
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + subscriptionPath - Entitypath to the message broker resource
+    # + return - An `asb:Error` if failed to read message or else `()`
     public function readFromSubscription(string connectionString, string subscriptionPath) returns error? {
         var r = receive(java:fromString(connectionString),java:fromString(subscriptionPath));
     }
