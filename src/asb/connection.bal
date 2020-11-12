@@ -4,80 +4,80 @@ import ballerina/java;
 public class TestClient{
     function init(){
 
-        // Connection Configuration
-        string connectionString = "Endpoint=sb://roland1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=OckfvtMMw6GHIftqU0Jj0A0jy0uIUjufhV5dCToiGJk=";
-        string content = "This is My Message Body"; 
-        string queuePath = "roland1queue";
-        string topicPath = "roland1topic";
-        string subscriptionPath1 = "roland1topic/subscriptions/roland1subscription1";
-        string subscriptionPath2 = "roland1topic/subscriptions/roland1subscription2";
-        string subscriptionPath3 = "roland1topic/subscriptions/roland1subscription3";
-        int maxMessageCount = 3;
+        // // Connection Configuration
+        // string connectionString = "Endpoint=sb://roland1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=OckfvtMMw6GHIftqU0Jj0A0jy0uIUjufhV5dCToiGJk=";
+        // string content = "This is My Message Body"; 
+        // string queuePath = "roland1queue";
+        // string topicPath = "roland1topic";
+        // string subscriptionPath1 = "roland1topic/subscriptions/roland1subscription1";
+        // string subscriptionPath2 = "roland1topic/subscriptions/roland1subscription2";
+        // string subscriptionPath3 = "roland1topic/subscriptions/roland1subscription3";
+        // int maxMessageCount = 3;
 
 
-        // publish and subscribe messages to topics and subscriptions
-        var s1 = send(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content));
-        var r1 = receive(java:fromString(connectionString),java:fromString(subscriptionPath1));
-        var r2 = receive(java:fromString(connectionString),java:fromString(subscriptionPath2));
-        var r3 = receive(java:fromString(connectionString),java:fromString(subscriptionPath3));
+        // // publish and subscribe messages to topics and subscriptions
+        // var s1 = send(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content));
+        // var r1 = receive(java:fromString(connectionString),java:fromString(subscriptionPath1));
+        // var r2 = receive(java:fromString(connectionString),java:fromString(subscriptionPath2));
+        // var r3 = receive(java:fromString(connectionString),java:fromString(subscriptionPath3));
 
-        // send and receive message to and from queue
-        var s2 = send(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content));
-        var r4 = receive(java:fromString(connectionString),java:fromString(queuePath));
+        // // send and receive message to and from queue
+        // var s2 = send(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content));
+        // var r4 = receive(java:fromString(connectionString),java:fromString(queuePath));
 
-        // publish and subscribe batch of messages to topics and subscriptions
-        var s3 = sendBatch(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content),maxMessageCount);
-        var r5 = receiveBatch(java:fromString(connectionString),java:fromString(subscriptionPath1),maxMessageCount);
-        var r6 = receiveBatch(java:fromString(connectionString),java:fromString(subscriptionPath2),maxMessageCount);
-        var r7 = receiveBatch(java:fromString(connectionString),java:fromString(subscriptionPath3),maxMessageCount);
+        // // publish and subscribe batch of messages to topics and subscriptions
+        // var s3 = sendBatch(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content),maxMessageCount);
+        // var r5 = receiveBatch(java:fromString(connectionString),java:fromString(subscriptionPath1),maxMessageCount);
+        // var r6 = receiveBatch(java:fromString(connectionString),java:fromString(subscriptionPath2),maxMessageCount);
+        // var r7 = receiveBatch(java:fromString(connectionString),java:fromString(subscriptionPath3),maxMessageCount);
 
-        // send and receive batch of messages to and from queue
-        var s4 = sendBatch(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content),maxMessageCount);
-        var r8 = receiveBatch(java:fromString(connectionString),java:fromString(queuePath),maxMessageCount);
+        // // send and receive batch of messages to and from queue
+        // var s4 = sendBatch(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content),maxMessageCount);
+        // var r8 = receiveBatch(java:fromString(connectionString),java:fromString(queuePath),maxMessageCount);
 
-        // complete all the messages & delete from subscription
-        var s5 = send(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content));
-        var r9 = completeFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath1));
-        var r10 = completeFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath2));
-        var r11 = completeFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath3));
+        // // complete all the messages & delete from subscription
+        // var s5 = send(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content));
+        // var r9 = completeFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath1));
+        // var r10 = completeFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath2));
+        // var r11 = completeFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath3));
 
-        // complete all the messages & delete from queue
-        var s6 = send(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content));
-        var r12 = completeFromQueue(java:fromString(connectionString),java:fromString(queuePath));
+        // // complete all the messages & delete from queue
+        // var s6 = send(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content));
+        // var r12 = completeFromQueue(java:fromString(connectionString),java:fromString(queuePath));
 
-        // complete single message & delete from subscription
-        var s7 = send(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content));
-        var r13 = completeMessageFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath1));
-        var r14 = completeMessageFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath2));
-        var r15 = completeMessageFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath3));
-        var r16 = completeMessageFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath1));
-        var r17 = completeMessageFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath2));
-        var r18 = completeMessageFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath3));
+        // // complete single message & delete from subscription
+        // var s7 = send(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content));
+        // var r13 = completeMessageFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath1));
+        // var r14 = completeMessageFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath2));
+        // var r15 = completeMessageFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath3));
+        // var r16 = completeMessageFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath1));
+        // var r17 = completeMessageFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath2));
+        // var r18 = completeMessageFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath3));
 
-        // complete single messages & delete from queue
-        var s8 = send(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content));
-        var r19 = completeMessageFromQueue(java:fromString(connectionString),java:fromString(queuePath));
-        var r20 = completeMessageFromQueue(java:fromString(connectionString),java:fromString(queuePath));
+        // // complete single messages & delete from queue
+        // var s8 = send(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content));
+        // var r19 = completeMessageFromQueue(java:fromString(connectionString),java:fromString(queuePath));
+        // var r20 = completeMessageFromQueue(java:fromString(connectionString),java:fromString(queuePath));
 
-        // abandon message & make available again for processing based on messageLockToken functionality to subscription
-        var s9 = send(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content));
-        var r21 = abandonFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath1));
-        var r22 = abandonFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath2));
-        var r23 = abandonFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath3));
-        var r24 = completeFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath1));
-        var r25 = completeFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath2));
-        var r26 = completeFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath3));
+        // // abandon message & make available again for processing based on messageLockToken functionality to subscription
+        // var s9 = send(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content));
+        // var r21 = abandonFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath1));
+        // var r22 = abandonFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath2));
+        // var r23 = abandonFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath3));
+        // var r24 = completeFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath1));
+        // var r25 = completeFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath2));
+        // var r26 = completeFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath3));
 
-        // abandon message & make available again for processing based on messageLockToken functionality to queue
-        var s10 = send(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content));
-        var r27 = abandonFromQueue(java:fromString(connectionString),java:fromString(queuePath));
-        var r28 = completeFromQueue(java:fromString(connectionString),java:fromString(queuePath));
+        // // abandon message & make available again for processing based on messageLockToken functionality to queue
+        // var s10 = send(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content));
+        // var r27 = abandonFromQueue(java:fromString(connectionString),java:fromString(queuePath));
+        // var r28 = completeFromQueue(java:fromString(connectionString),java:fromString(queuePath));
 
-        // Auto Forward - Send msg directly to a queue and send a msg to a topic that has activated autoforward in 
-        // a subsription that forwards to the original queue
-        var s11 = send(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content));
-        var s12 = send(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content));
-        var r29 = receive(java:fromString(connectionString),java:fromString(queuePath));
+        // // Auto Forward - Send msg directly to a queue and send a msg to a topic that has activated autoforward in 
+        // // a subsription that forwards to the original queue
+        // var s11 = send(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content));
+        // var s12 = send(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content));
+        // var r29 = receive(java:fromString(connectionString),java:fromString(queuePath));
 
 
     }
