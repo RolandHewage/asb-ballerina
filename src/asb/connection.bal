@@ -2,6 +2,7 @@ import ballerina/java;
 // import ballerina/io;
 
 public class TestClient{
+
     function init(){
 
         // // Connection Configuration
@@ -140,52 +141,148 @@ public class TestClient{
         var r = receive(java:fromString(connectionString),java:fromString(subscriptionPath));
     }
 
-    // send batch of messages to queue with a content
+    # Send batch of messages to queue with a content
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + queuePath - Entitypath to the message broker resource
+    # + content - MessageBody content
+    # + maxMessageCount - maximum amount of messages to send in a batch
+    # + return - An `asb:Error` if failed to send message or else `()`
     public function sendBatchToQueue(string connectionString, string queuePath, string content, int maxMessageCount) returns error? {
         var s = sendBatch(java:fromString(connectionString),java:fromString(queuePath),java:fromString(content), maxMessageCount);
     }
 
-    // receive batch of messages from queue and display content
+    # Receive batch of messages from queue and display content
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + queuePath - Entitypath to the message broker resource
+    # + maxMessageCount - maximum amount of messages to recieve from a batch
+    # + return - An `asb:Error` if failed to read message or else `()`
     public function readBatchFromQueue(string connectionString, string queuePath, int maxMessageCount) returns error? {
         var r = receiveBatch(java:fromString(connectionString),java:fromString(queuePath), maxMessageCount);
     }
 
-    // publish batch of messages to topic with a content
+    # Publish batch of messages to topic with a content
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + topicPath - Entitypath to the message broker resource
+    # + content - MessageBody content
+    # + maxMessageCount - maximum amount of messages to send in a batch
+    # + return - An `asb:Error` if failed to send message or else `()`
     public function sendBatchToTopic(string connectionString, string topicPath, string content, int maxMessageCount) returns error? {
         var s = sendBatch(java:fromString(connectionString),java:fromString(topicPath),java:fromString(content),maxMessageCount);
     }
 
-    // receive batch of subscribe messages to subscriptions and display content
+    # Receive batch of subscribe messages to subscriptions and display content
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + subscriptionPath - Entitypath to the message broker resource
+    # + maxMessageCount - maximum amount of messages to recieve from a batch
+    # + return - An `asb:Error` if failed to read message or else `()`
     public function readBatchFromSubscription(string connectionString, string subscriptionPath, int maxMessageCount) returns error? {
         var r = receiveBatch(java:fromString(connectionString),java:fromString(subscriptionPath), maxMessageCount);
     }
 
-    // complete all messages and delete from queue and display content
+    # Complete all messages and delete from queue and display content
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + queuePath - Entitypath to the message broker resource
+    # + return - An `asb:Error` if failed to complete messages or else `()`
     public function completeFromQueue(string connectionString, string queuePath) returns error? {
         var r = completeFromQueue(java:fromString(connectionString),java:fromString(queuePath));
     }
 
-    // complete all messages and delete from subscription and display content
+    # complete all messages and delete from subscription and display content
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + subscriptionPath - Entitypath to the message broker resource
+    # + return - An `asb:Error` if failed to complete messages or else `()`
     public function completeFromSubscription(string connectionString, string subscriptionPath) returns error? {
         var r = completeFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath));
     }
 
-    // complete single message and delete from queue and display content
+    # Complete single message and delete from queue and display content
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + queuePath - Entitypath to the message broker resource
+    # + return - An `asb:Error` if failed to complete message or else `()`
     public function completeMessageFromQueue(string connectionString, string queuePath) returns error? {
         var r = completeMessageFromQueue(java:fromString(connectionString),java:fromString(queuePath));
     }
 
-    // complete single message and delete from subscription and display content
+    # Complete single message and delete from subscription and display content
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + subscriptionPath - Entitypath to the message broker resource
+    # + return - An `asb:Error` if failed to complete message or else `()`
     public function completeMessageFromSubscription(string connectionString, string subscriptionPath) returns error? {
         var r = completeMessageFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath));
     }
 
-    // abandon message & make available again for processing based on messageLockToken functionality to queue
+    # Abandon message & make available again for processing based on messageLockToken functionality to queue
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + queuePath - Entitypath to the message broker resource
+    # + return - An `asb:Error` if failed to abandon message or else `()`
     public function abandonFromQueue(string connectionString, string queuePath) returns error? {
         var r = abandonFromQueue(java:fromString(connectionString),java:fromString(queuePath));
     }
 
-    // abandon message & make available again for processing based on messageLockToken functionality to subscription
+    # Abandon message & make available again for processing based on messageLockToken functionality to subscription
+    #
+    # + connectionString - Service bus connection string with Shared Access Signatures
+    #                      ConnectionString format: 
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+    #                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+    #                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+    # + subscriptionPath - Entitypath to the message broker resource
+    # + return - An `asb:Error` if failed to abandon message or else `()`
     public function abandonFromSubscription(string connectionString, string subscriptionPath) returns error? {
         var r = abandonFromSubscription(java:fromString(connectionString),java:fromString(subscriptionPath));
     }
