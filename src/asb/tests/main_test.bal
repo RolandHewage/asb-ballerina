@@ -18,7 +18,7 @@ function beforeSuiteFunc() {
 }
 
 # Publish and subscribe messages to topics and subscriptions
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testPublishAndSubscribe() {
     TestClient testClient = new();
     var s1 = testClient.sendToTopic(connectionString,topicPath,content);
@@ -28,15 +28,15 @@ function testPublishAndSubscribe() {
 }
 
 # Send and receive message to and from queue
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testSendAndReceive() {
     TestClient testClient = new();
-    var s2 = testClient.sendToQueue(connectionString,queuePath,content);
+    var s2 = testClient.sendToQueue(connectionString, queuePath, content);
     var r4 = testClient.readFromQueue(connectionString,queuePath);
 }
 
 # Publish and subscribe batch of messages to topics and subscriptions
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testPublishAndSubscribeBatch() {
     TestClient testClient = new();
     var s3 = testClient.sendBatchToTopic(connectionString,topicPath,content,maxMessageCount);
@@ -46,7 +46,7 @@ function testPublishAndSubscribeBatch() {
 }
 
 # Send and receive batch of messages to and from queue
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testSendAndReceiveBatch() {
     TestClient testClient = new();
     var s4 = testClient.sendBatchToQueue(connectionString,queuePath,content, maxMessageCount);
@@ -54,7 +54,7 @@ function testSendAndReceiveBatch() {
 }
 
 # Complete all the messages & delete from subscription
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testCompleteAllFromSubscription() {
     TestClient testClient = new();
     var s5 = testClient.sendToTopic(connectionString,topicPath,content);
@@ -64,7 +64,7 @@ function testCompleteAllFromSubscription() {
 }
 
 # Complete all the messages & delete from queue
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testCompleteAllFromQueue() {
     TestClient testClient = new();
     var s6 = testClient.sendToQueue(connectionString,queuePath,content);
@@ -72,7 +72,7 @@ function testCompleteAllFromQueue() {
 }
 
 # Complete single message & delete from subscription
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testCompleteOneFromSubscription() {
     TestClient testClient = new();
     var s7 = testClient.sendToTopic(connectionString,topicPath,content);
@@ -85,7 +85,7 @@ function testCompleteOneFromSubscription() {
 }
 
 # Complete single messages & delete from queue
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testCompleteOneFromQueue() {
     TestClient testClient = new();
     var s8 = testClient.sendToQueue(connectionString,queuePath,content);
@@ -94,7 +94,7 @@ function testCompleteOneFromQueue() {
 }
 
 # Abandon message & make available again for processing based on messageLockToken functionality to subscription
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testAbandonFromSubscription() {
     TestClient testClient = new();
     var s9 = testClient.sendToTopic(connectionString,topicPath,content);
@@ -107,7 +107,7 @@ function testAbandonFromSubscription() {
 }
 
 # Abandon message & make available again for processing based on messageLockToken functionality to queue
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testAbandonFromQueue() {
     TestClient testClient = new();
     var s10 = testClient.sendToQueue(connectionString,queuePath,content);
@@ -117,7 +117,7 @@ function testAbandonFromQueue() {
 
 # Auto Forward - Send msg directly to a queue and send a msg to a topic that has activated autoforward in 
 # a subsription that forwards to the original queue
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testAutoForward() {
     TestClient testClient = new();
     var s11 = testClient.sendToQueue(connectionString,queuePath,content);
