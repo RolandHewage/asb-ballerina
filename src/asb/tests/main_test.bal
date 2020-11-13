@@ -18,7 +18,7 @@ function beforeSuiteFunc() {
 }
 
 # Publish and subscribe messages to topics and subscriptions
-@test:Config{enable: false}
+@test:Config{enable: true}
 function testPublishAndSubscribe() {
     TestClient testClient = new();
     var s1 = testClient.sendToTopic(connectionString,topicPath,content);
@@ -31,7 +31,7 @@ function testPublishAndSubscribe() {
 @test:Config{enable: false}
 function testSendAndReceive() {
     TestClient testClient = new();
-    var s2 = testClient.sendToQueue(connectionString, queuePath, content);
+    var s2 = testClient.sendToQueue(connectionString,queuePath,content);
     var r4 = testClient.readFromQueue(connectionString,queuePath);
 }
 
