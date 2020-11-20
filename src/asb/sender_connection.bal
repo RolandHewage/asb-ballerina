@@ -23,9 +23,7 @@ public class SenderConnection{
         return closeSenderConnection(self.asbSenderConnection);
     }
 
-    public isolated function sendBytesMessageViaSenderConnectionWithConfigurableParameters(byte[] content) returns error? {
-        map<string> parameters = {contentType: "json", messageId: "rol", to: "roly", replyTo: "sola", label: "a1", sessionId: "b1", correlationId: "c1", timeToLive: "2"};
-        map<string> properties = {a: "rol", b: "12"};
+    public isolated function sendBytesMessageViaSenderConnectionWithConfigurableParameters(byte[] content, map<string> parameters,map<string> properties) returns error? {
         return sendBytesMessageViaSenderConnectionWithConfigurableParameters(self.asbSenderConnection, content, parameters, properties);
     }
 

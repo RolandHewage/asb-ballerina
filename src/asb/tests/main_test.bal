@@ -22,6 +22,8 @@ byte[] byteContentFromJson = jsonContent.toJsonString().toBytes();
 json[] jsonArrayContent = [{name: "apple", color: "red", price: 5.36}, {first: "John", last: "Pala"}];
 string[] stringArrayContent = ["apple","mango","lemon","orange"];
 int[] integerArrayContent = [4, 5, 6];
+map<string> parameters = {contentType: "application/json", messageId: "one", to: "sanju", replyTo: "carol", label: "a1", sessionId: "b1", correlationId: "c1", timeToLive: "2"};
+map<string> properties = {a: "nimal", b: "saman"};
 
 # Before Suite Function
 @test:BeforeSuite
@@ -38,8 +40,8 @@ function beforeSuiteFunc() {
 }
 
 # Test Sender Connection
-@test:Config{enable: true}
-public function testConnection() {
+@test:Config{enable: false}
+public function testSenderConnection() {
     boolean flag = false;
     SenderConnection? senderConnection = new ({connectionString: connectionString, entityPath: queuePath});
     if (senderConnection is SenderConnection) {
@@ -48,42 +50,144 @@ public function testConnection() {
     test:assertTrue(flag, msg = "Asb Sender Connection creation failed.");
 }
 
-# Test Sender Connection
-@test:Config{enable: true}
-function testSenderConnection() {
-    io:println("Creating sender connection");
+# Test Receiver Connection
+@test:Config{enable: false}
+public function testReceieverConnection() {
+    boolean flag = false;
+    ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
+    if (receiverConnection is ReceiverConnection) {
+        flag = true;
+    }
+    test:assertTrue(flag, msg = "Asb Receiver Connection creation failed.");
+}
+
+# Test send to queue operation
+@test:Config{enable: false}
+function testSendToQueueOperation() {
+    log:printInfo("Creating Asb sender connection.");
     SenderConnection? senderConnection = new ({connectionString: connectionString, entityPath: queuePath});
 
     if (senderConnection is SenderConnection) {
-        io:println("Sending via connection");
-        checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContent);
+        log:printInfo("Sending via Asb sender connection.");
+        checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContent, parameters, properties);
+    } else {
+        test:assertFail("Asb sender connection creation failed.");
     }
 
     if (senderConnection is SenderConnection) {
-        io:println("Closing sender connection");
+        log:printInfo("Closing Asb sender connection.");
         checkpanic senderConnection.closeSenderConnection();
     }
 }
 
-# Test Reciever Connection
-@test:Config{enable: true}
-function testReceiveConnection() {
-    io:println("Creating receiver connection");
+# Test receive from queue operation
+@test:Config{enable: false}
+function testReceiveFromQueueOperation() {
+    log:printInfo("Creating Asb receiver connection.");
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
 
     if (receiverConnection is ReceiverConnection) {
-        io:println("Receiving from connection");
+        log:printInfo("Receiving from Asb receiver connection.");
         var messages = receiverConnection.receiveBytesMessageViaReceiverConnectionWithConfigurableParameters();
         if(messages is handle) {
             checkpanic receiverConnection.checkMessage(messages);
+        } else {
+            test:assertFail("Receiving message via Asb receiver connection failed.");
         }
+    } else {
+        test:assertFail("Asb receiver connection creation failed.");
     }
 
     if (receiverConnection is ReceiverConnection) {
-        io:println("Closing receiver connection");
+        log:printInfo("Closing Asb receiver connection.");
         checkpanic receiverConnection.closeReceiverConnection();
     }
 }
+
+# Test send to topic operation
+@test:Config{enable: true}
+function testSendToTopicOperation() {
+    log:printInfo("Creating Asb sender connection.");
+    SenderConnection? senderConnection = new ({connectionString: connectionString, entityPath: topicPath});
+
+    if (senderConnection is SenderConnection) {
+        log:printInfo("Sending via Asb sender connection.");
+        checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContent, parameters, properties);
+    } else {
+        test:assertFail("Asb sender connection creation failed.");
+    }
+
+    if (senderConnection is SenderConnection) {
+        log:printInfo("Closing Asb sender connection.");
+        checkpanic senderConnection.closeSenderConnection();
+    }
+}
+
+# Test receive from subscription operation
+@test:Config{enable: true}
+function testReceiveFromSubscriptionOperation() {
+    log:printInfo("Creating Asb receiver connection.");
+    ReceiverConnection? receiverConnection1 = new ({connectionString: connectionString, entityPath: subscriptionPath1});
+    ReceiverConnection? receiverConnection2 = new ({connectionString: connectionString, entityPath: subscriptionPath2});
+    ReceiverConnection? receiverConnection3 = new ({connectionString: connectionString, entityPath: subscriptionPath3});
+
+    if (receiverConnection1 is ReceiverConnection) {
+        log:printInfo("Receiving from Asb receiver connection 1.");
+        var messages = receiverConnection1.receiveBytesMessageViaReceiverConnectionWithConfigurableParameters();
+        if(messages is handle) {
+            checkpanic receiverConnection1.checkMessage(messages);
+        } else {
+            test:assertFail("Receiving message via Asb receiver connection failed.");
+        }
+    } else {
+        test:assertFail("Asb receiver connection creation failed.");
+    }
+
+    if (receiverConnection2 is ReceiverConnection) {
+        log:printInfo("Receiving from Asb receiver connection 2.");
+        var messages = receiverConnection2.receiveBytesMessageViaReceiverConnectionWithConfigurableParameters();
+        if(messages is handle) {
+            checkpanic receiverConnection2.checkMessage(messages);
+        } else {
+            test:assertFail("Receiving message via Asb receiver connection failed.");
+        }
+    } else {
+        test:assertFail("Asb receiver connection creation failed.");
+    }
+
+    if (receiverConnection3 is ReceiverConnection) {
+        log:printInfo("Receiving from Asb receiver connection 3.");
+        var messages = receiverConnection3.receiveBytesMessageViaReceiverConnectionWithConfigurableParameters();
+        if(messages is handle) {
+            checkpanic receiverConnection3.checkMessage(messages);
+        } else {
+            test:assertFail("Receiving message via Asb receiver connection failed.");
+        }
+    } else {
+        test:assertFail("Asb receiver connection creation failed.");
+    }
+
+    if (receiverConnection1 is ReceiverConnection) {
+        log:printInfo("Closing Asb receiver connection 1.");
+        checkpanic receiverConnection1.closeReceiverConnection();
+    }
+
+    if (receiverConnection2 is ReceiverConnection) {
+        log:printInfo("Closing Asb receiver connection 2.");
+        checkpanic receiverConnection2.closeReceiverConnection();
+    }
+
+    if (receiverConnection3 is ReceiverConnection) {
+        log:printInfo("Closing Asb receiver connection 3.");
+        checkpanic receiverConnection3.closeReceiverConnection();
+    }
+}
+
+
+
+
+
+
 
 //--------------------------------------------------------------------------------------------------------------------------
 
