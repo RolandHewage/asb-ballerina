@@ -24,6 +24,7 @@ string[] stringArrayContent = ["apple","mango","lemon","orange"];
 int[] integerArrayContent = [4, 5, 6];
 map<string> parameters = {contentType: "application/json", messageId: "one", to: "sanju", replyTo: "carol", label: "a1", sessionId: "b1", correlationId: "c1", timeToLive: "2"};
 map<string> properties = {a: "nimal", b: "saman"};
+map<string> parameters1 = {contentType: "application/json", messageId: "one"};
 
 # Before Suite Function
 @test:BeforeSuite
@@ -62,14 +63,14 @@ public function testReceieverConnection() {
 }
 
 # Test send to queue operation
-@test:Config{enable: false}
+@test:Config{enable: true}
 function testSendToQueueOperation() {
     log:printInfo("Creating Asb sender connection.");
     SenderConnection? senderConnection = new ({connectionString: connectionString, entityPath: queuePath});
 
     if (senderConnection is SenderConnection) {
         log:printInfo("Sending via Asb sender connection.");
-        checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContent, parameters, properties);
+        checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContent, parameters1, properties);
     } else {
         test:assertFail("Asb sender connection creation failed.");
     }
@@ -81,7 +82,7 @@ function testSendToQueueOperation() {
 }
 
 # Test receive from queue operation
-@test:Config{enable: false}
+@test:Config{enable: true}
 function testReceiveFromQueueOperation() {
     log:printInfo("Creating Asb receiver connection.");
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
@@ -105,14 +106,14 @@ function testReceiveFromQueueOperation() {
 }
 
 # Test send to topic operation
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testSendToTopicOperation() {
     log:printInfo("Creating Asb sender connection.");
     SenderConnection? senderConnection = new ({connectionString: connectionString, entityPath: topicPath});
 
     if (senderConnection is SenderConnection) {
         log:printInfo("Sending via Asb sender connection.");
-        checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContent, parameters, properties);
+        checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContentFromJson, parameters, properties);
     } else {
         test:assertFail("Asb sender connection creation failed.");
     }
@@ -124,7 +125,7 @@ function testSendToTopicOperation() {
 }
 
 # Test receive from subscription operation
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testReceiveFromSubscriptionOperation() {
     log:printInfo("Creating Asb receiver connection.");
     ReceiverConnection? receiverConnection1 = new ({connectionString: connectionString, entityPath: subscriptionPath1});
