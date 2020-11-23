@@ -31,6 +31,15 @@ public class ReceiverConnection{
         checkpanic checkMessage(imessages);
     }
 
+    public isolated function getTextContent(byte[] content) returns @tainted string|Error {
+
+        return nativeGetTextContent(content);
+    }
+
+    public isolated function receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters() returns Message|error {
+        return receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters(self.asbReceiverConnection);
+    }
+
 }
 
 isolated function createReceiverConnection(handle connectionString, handle entityPath) returns handle|error? = @java:Method {
@@ -43,12 +52,23 @@ isolated function closeReceiverConnection(handle imessageSender) returns error? 
     'class: "com.roland.asb.connection.ConUtils"
 } external;
 
-isolated function receiveBytesMessageViaReceiverConnectionWithConfigurableParameters(handle imessageSender) returns handle|error? = @java:Method {
+isolated function receiveBytesMessageViaReceiverConnectionWithConfigurableParameters(handle imessageReceiver) returns handle|error? = @java:Method {
     name: "receiveBytesMessageViaReceiverConnectionWithConfigurableParameters",
     'class: "com.roland.asb.connection.ConUtils"
 } external;
 
 isolated function checkMessage(handle imessage) returns error? = @java:Method {
     name: "checkMessage",
+    'class: "com.roland.asb.connection.ConUtils"
+} external;
+
+isolated function nativeGetTextContent(byte[] messageContent) returns string|Error =
+@java:Method {
+    name: "getTextContent",
+    'class: "com.roland.asb.AsbMessageUtils"
+} external;
+
+isolated function receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters(handle imessageReceiver) returns Message|error = @java:Method {
+    name: "receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters",
     'class: "com.roland.asb.connection.ConUtils"
 } external;
