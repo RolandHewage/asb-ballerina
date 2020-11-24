@@ -1,3 +1,5 @@
+import ballerina/java;
+
 public class Message {
     private byte[] messageContent = [];
 
@@ -6,3 +8,9 @@ public class Message {
         return nativeGetTextContent(self.messageContent);
     }
 }
+
+isolated function nativeGetTextContent(byte[] messageContent) returns string|Error =
+@java:Method {
+    name: "getTextContent",
+    'class: "com.roland.asb.AsbMessageUtils"
+} external;

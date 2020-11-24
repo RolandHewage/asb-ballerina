@@ -31,11 +31,6 @@ public class ReceiverConnection{
         checkpanic checkMessage(imessages);
     }
 
-    public isolated function getTextContent(byte[] content) returns @tainted string|Error {
-
-        return nativeGetTextContent(content);
-    }
-
     public isolated function receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters() returns Message|error {
         return receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters(self.asbReceiverConnection);
     }
@@ -64,12 +59,6 @@ isolated function receiveBytesMessageViaReceiverConnectionWithConfigurableParame
 isolated function checkMessage(handle imessage) returns error? = @java:Method {
     name: "checkMessage",
     'class: "com.roland.asb.connection.ConUtils"
-} external;
-
-isolated function nativeGetTextContent(byte[] messageContent) returns string|Error =
-@java:Method {
-    name: "getTextContent",
-    'class: "com.roland.asb.AsbMessageUtils"
 } external;
 
 isolated function receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters(handle imessageReceiver) returns Message|error = @java:Method {
