@@ -35,7 +35,7 @@ public class ReceiverConnection{
         return receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters(self.asbReceiverConnection);
     }
 
-    public isolated function receiveTwoBytesMessageViaReceiverConnectionWithConfigurableParameters() returns handle|error {
+    public isolated function receiveTwoBytesMessageViaReceiverConnectionWithConfigurableParameters() returns Messages|error {
         return receiveTwoBytesMessageViaReceiverConnectionWithConfigurableParameters(self.asbReceiverConnection);
     }
 
@@ -66,7 +66,7 @@ isolated function receiveOneBytesMessageViaReceiverConnectionWithConfigurablePar
     'class: "com.roland.asb.connection.ConUtils"
 } external;
 
-isolated function receiveTwoBytesMessageViaReceiverConnectionWithConfigurableParameters(handle imessageReceiver) returns handle|error = @java:Method {
+isolated function receiveTwoBytesMessageViaReceiverConnectionWithConfigurableParameters(handle imessageReceiver) returns Messages|error = @java:Method {
     name: "receiveTwoBytesMessageViaReceiverConnectionWithConfigurableParameters",
     'class: "com.roland.asb.connection.ConUtils"
 } external;

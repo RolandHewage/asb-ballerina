@@ -23,6 +23,7 @@ json[] jsonArrayContent = [{name: "apple", color: "red", price: 5.36}, {first: "
 string[] stringArrayContent = ["apple","mango","lemon","orange"];
 int[] integerArrayContent = [4, 5, 6];
 map<string> parameters = {contentType: "application/json", messageId: "one", to: "sanju", replyTo: "carol", label: "a1", sessionId: "b1", correlationId: "c1", timeToLive: "2"};
+map<string> parameters2 = {contentType: "application/json", messageId: "two", to: "sanju", replyTo: "carol", label: "a1", sessionId: "b1", correlationId: "c1", timeToLive: "2"};
 map<string> properties = {a: "nimal", b: "saman"};
 map<string> parameters1 = {contentType: "application/json", messageId: "one"};
 
@@ -71,6 +72,7 @@ function testSendToQueueOperation() {
     if (senderConnection is SenderConnection) {
         log:printInfo("Sending via Asb sender connection.");
         checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContent, parameters1, properties);
+        checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContentFromJson, parameters2, properties);
     } else {
         test:assertFail("Asb sender connection creation failed.");
     }
@@ -89,9 +91,21 @@ function testReceiveFromQueueOperation() {
 
     if (receiverConnection is ReceiverConnection) {
         log:printInfo("Receiving from Asb receiver connection.");
-        Message messageReceived = checkpanic receiverConnection.receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters();
-        string messageReceived1 = checkpanic messageReceived.getTextContent1();
-        log:printInfo(messageReceived1);
+        var messageReceived = receiverConnection.receiveTwoBytesMessageViaReceiverConnectionWithConfigurableParameters();
+        if(messageReceived is Messages) {
+            int val = messageReceived.getDeliveryTag();
+            log:printInfo(val);
+            Message[] messageReceived1 = messageReceived.getMessages();
+            string messageReceived2 =  checkpanic messageReceived1[1].getTextContent1();
+            log:printInfo(messageReceived2);
+        } 
+        if (messageReceived is error) {
+            log:printInfo("messageReceived");
+        }
+        
+        // Message messageReceived = checkpanic receiverConnection.receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters();
+        // string messageReceived1 = checkpanic messageReceived.getTextContent1();
+        // log:printInfo(messageReceived1);
         // var messages = receiverConnection.receiveBytesMessageViaReceiverConnectionWithConfigurableParameters();
         // if(messages is handle) {
         //     checkpanic receiverConnection.checkMessage(messages);
