@@ -1,6 +1,7 @@
 import ballerina/io;
 import ballerina/test;
 import ballerina/log;
+import ballerina/runtime;
 
 // Connection Configuration
 string connectionString = "Endpoint=sb://roland1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=OckfvtMMw6GHIftqU0Jj0A0jy0uIUjufhV5dCToiGJk=";
@@ -26,6 +27,7 @@ map<string> parameters = {contentType: "application/json", messageId: "one", to:
 map<string> parameters2 = {contentType: "application/json", messageId: "two", to: "sanju", replyTo: "carol", label: "a1", sessionId: "b1", correlationId: "c1", timeToLive: "2"};
 map<string> properties = {a: "nimal", b: "saman"};
 map<string> parameters1 = {contentType: "application/json", messageId: "one"};
+string asyncConsumerMessage = "";
 
 # Before Suite Function
 @test:BeforeSuite
@@ -123,6 +125,48 @@ function testReceiveFromQueueOperation() {
         checkpanic receiverConnection.closeReceiverConnection();
     }
 }
+
+# Test Listener capabilities
+@test:Config {dependsOn: ["testSenderConnection"], enable: true}
+public function testAsyncConsumer() {
+
+    ConnectionConfiguration config = {
+        connectionString: connectionString,
+        entityPath: queuePath
+    };
+
+    string message = "Testing Async Consumer";
+    Listener? channelListener = new(config);
+    if (channelListener is Listener) {
+        checkpanic channelListener.__attach(asyncTestService);
+        checkpanic channelListener.__start();
+        log:printInfo("start");
+        runtime:sleep(15000);
+        log:printInfo("end");
+        checkpanic channelListener.__detach(asyncTestService);
+        test:assertEquals(asyncConsumerMessage, message, msg = "Message received does not match.");
+    }
+}
+
+# Async test service used to attached to the listener
+service asyncTestService = 
+@ServiceConfig {
+    queueConfig: {
+        connectionString: connectionString,
+        queueName: queuePath
+    }
+}
+service {
+    resource function onMessage(Message message) {
+        var messageContent = message.getTextContent1();
+        if (messageContent is string) {
+            asyncConsumerMessage = <@untainted> messageContent;
+            log:printInfo("The message received: " + messageContent);
+        } else {
+            log:printError("Error occurred while retrieving the message content.");
+        }
+    }
+};
 
 # Test send to topic operation
 @test:Config{enable: false}
