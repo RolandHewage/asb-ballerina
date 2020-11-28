@@ -5,12 +5,15 @@ public class Listener {
 
     *lang:Listener;
 
+    private ReceiverConnection receiverConnection;
+
     # Initializes a Listener object with the given `asb:Connection` object or connection configurations.
     # Creates a `asb:Connection` object if only the connection configuration is given. 
     #
     # + connectionOrConnectionConfig - A `asb:Connection` object or the connection configurations.
-    public function init(ConnectionConfiguration? connectionOrConnectionConfig) {
-        externInit(self);
+    public function init(ConnectionConfiguration connectionConfig) {
+        self.receiverConnection = new (connectionConfig);
+        externInit(self, self.receiverConnection.getAsbReceiverConnection());
     }
 
     # Attaches the service to the `asb:Listener` endpoint.
@@ -53,7 +56,7 @@ public class Listener {
     }
 }  
 
-isolated function externInit(Listener lis) =
+isolated function externInit(Listener lis, handle asbReceiverConnection) =
 @java:Method {
     name: "init",
     'class: "com.roland.asb.connection.ListenerUtils"

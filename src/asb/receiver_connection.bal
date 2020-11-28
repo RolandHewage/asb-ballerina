@@ -39,6 +39,10 @@ public class ReceiverConnection{
         return receiveTwoBytesMessageViaReceiverConnectionWithConfigurableParameters(self.asbReceiverConnection);
     }
 
+    isolated function getAsbReceiverConnection() returns handle {
+        return self.asbReceiverConnection;
+    }
+
 }
 
 isolated function createReceiverConnection(handle connectionString, handle entityPath) returns handle|error? = @java:Method {
