@@ -598,7 +598,7 @@ function testCompleteOneMessageFromSubscriptionOperation() {
 }
 
 # Test abandon Message from subscription operation
-@test:Config{dependsOn: ["testSendToTopicOperation"], enable: true}
+@test:Config{dependsOn: ["testSendToTopicOperation"], enable: false}
 function testAbandonMessageFromSubscriptionOperation() {
     log:printInfo("Creating Asb receiver connection.");
     ReceiverConnection? receiverConnection1 = new ({connectionString: connectionString, entityPath: subscriptionPath1});
