@@ -57,7 +57,7 @@ public class ReceiverConnection{
 
     # Complete Messages from Queue or Subscription based on messageLockToken.
     # 
-    # + return - An `asb:Error` if failed to complete messages or else `()`
+    # + return - An `asb:Error` if failed to complete message or else `()`
     public isolated function completeMessages() returns error? {
         return completeMessages(self.asbReceiverConnection);
     }
@@ -67,6 +67,13 @@ public class ReceiverConnection{
     # + return - An `asb:Error` if failed to complete messages or else `()`
     public isolated function completeOneMessage() returns error? {
         return completeOneMessage(self.asbReceiverConnection);
+    }
+
+    # Abandon message & make available again for processing from Queue or Subscription based on messageLockToken
+    # 
+    # + return - An `asb:Error` if failed to abandon message or else `()`
+    public isolated function abandonMessage() returns error? {
+        return abandonMessage(self.asbReceiverConnection);
     }
 
 }
@@ -113,5 +120,10 @@ isolated function completeMessages(handle imessageReceiver) returns error? = @ja
 
 isolated function completeOneMessage(handle imessageReceiver) returns error? = @java:Method {
     name: "completeOneMessage",
+    'class: "com.roland.asb.connection.ConUtils"
+} external;
+
+isolated function abandonMessage(handle imessageReceiver) returns error? = @java:Method {
+    name: "abandonMessage",
     'class: "com.roland.asb.connection.ConUtils"
 } external;

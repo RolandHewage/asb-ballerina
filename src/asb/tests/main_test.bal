@@ -230,7 +230,8 @@ function testCompleteMessagesFromQueueOperation() {
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
 
     if (receiverConnection is ReceiverConnection) {
-        log:printInfo("Completing from Asb receiver connection.");
+        log:printInfo("Completing message from Asb receiver connection.");
+        checkpanic receiverConnection.completeMessages();
         checkpanic receiverConnection.completeMessages();
     } else {
         test:assertFail("Asb receiver connection creation failed.");
@@ -243,17 +244,37 @@ function testCompleteMessagesFromQueueOperation() {
 }
 
 # Test complete single messages from queue operation
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testCompleteOneMessageFromQueueOperation() {
     log:printInfo("Creating Asb receiver connection.");
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
 
     if (receiverConnection is ReceiverConnection) {
-        log:printInfo("Completing from Asb receiver connection.");
+        log:printInfo("Completing message from Asb receiver connection.");
         checkpanic receiverConnection.completeOneMessage();
         checkpanic receiverConnection.completeOneMessage();
         checkpanic receiverConnection.completeOneMessage();
         checkpanic receiverConnection.completeOneMessage();
+    } else {
+        test:assertFail("Asb receiver connection creation failed.");
+    }
+
+    if (receiverConnection is ReceiverConnection) {
+        log:printInfo("Closing Asb receiver connection.");
+        checkpanic receiverConnection.closeReceiverConnection();
+    }
+}
+
+# Test abandon Message from queue operation
+@test:Config{enable: true}
+function testAbandonMessageFromQueueOperation() {
+    log:printInfo("Creating Asb receiver connection.");
+    ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
+
+    if (receiverConnection is ReceiverConnection) {
+        log:printInfo("abandoning message from Asb receiver connection.");
+        checkpanic receiverConnection.abandonMessage();
+        checkpanic receiverConnection.completeMessages();
     } else {
         test:assertFail("Asb receiver connection creation failed.");
     }
