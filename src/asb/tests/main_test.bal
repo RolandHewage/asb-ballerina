@@ -230,9 +230,12 @@ function testCompleteMessagesFromQueueOperation() {
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
 
     if (receiverConnection is ReceiverConnection) {
-        log:printInfo("Completing message from Asb receiver connection.");
+        log:printInfo("Completing messages from Asb receiver connection.");
         checkpanic receiverConnection.completeMessages();
+        log:printInfo("Done completing a message using its lock token.");
+        log:printInfo("Completing messages from Asb receiver connection.");
         checkpanic receiverConnection.completeMessages();
+        log:printInfo("Done completing a message using its lock token.");
     } else {
         test:assertFail("Asb receiver connection creation failed.");
     }
@@ -255,6 +258,7 @@ function testCompleteOneMessageFromQueueOperation() {
         checkpanic receiverConnection.completeOneMessage();
         checkpanic receiverConnection.completeOneMessage();
         checkpanic receiverConnection.completeOneMessage();
+        log:printInfo("Done completing a message using its lock token.");
     } else {
         test:assertFail("Asb receiver connection creation failed.");
     }
@@ -274,7 +278,10 @@ function testAbandonMessageFromQueueOperation() {
     if (receiverConnection is ReceiverConnection) {
         log:printInfo("abandoning message from Asb receiver connection.");
         checkpanic receiverConnection.abandonMessage();
+        log:printInfo("Done abandoning a message using its lock token.");
+        log:printInfo("Completing message from Asb receiver connection.");
         checkpanic receiverConnection.completeMessages();
+        log:printInfo("Done completing a message using its lock token.");
     } else {
         test:assertFail("Asb receiver connection creation failed.");
     }
