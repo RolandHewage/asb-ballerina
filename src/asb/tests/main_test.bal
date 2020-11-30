@@ -224,7 +224,7 @@ function testReceiveBatchFromQueueOperation() {
 }
 
 # Test complete Messages from queue operation
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testCompleteMessagesFromQueueOperation() {
     log:printInfo("Creating Asb receiver connection.");
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
@@ -232,6 +232,28 @@ function testCompleteMessagesFromQueueOperation() {
     if (receiverConnection is ReceiverConnection) {
         log:printInfo("Completing from Asb receiver connection.");
         checkpanic receiverConnection.completeMessages();
+    } else {
+        test:assertFail("Asb receiver connection creation failed.");
+    }
+
+    if (receiverConnection is ReceiverConnection) {
+        log:printInfo("Closing Asb receiver connection.");
+        checkpanic receiverConnection.closeReceiverConnection();
+    }
+}
+
+# Test complete single messages from queue operation
+@test:Config{enable: true}
+function testCompleteOneMessageFromQueueOperation() {
+    log:printInfo("Creating Asb receiver connection.");
+    ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
+
+    if (receiverConnection is ReceiverConnection) {
+        log:printInfo("Completing from Asb receiver connection.");
+        checkpanic receiverConnection.completeOneMessage();
+        checkpanic receiverConnection.completeOneMessage();
+        checkpanic receiverConnection.completeOneMessage();
+        checkpanic receiverConnection.completeOneMessage();
     } else {
         test:assertFail("Asb receiver connection creation failed.");
     }
