@@ -4,7 +4,7 @@ import ballerina/log;
 import ballerina/runtime;
 
 // Connection Configuration
-string connectionString = "Endpoint=sb://roland1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=OckfvtMMw6GHIftqU0Jj0A0jy0uIUjufhV5dCToiGJk=";
+string connectionString = "<SAS>";
 string queuePath = "roland1queue";
 string topicPath = "roland1topic";
 string subscriptionPath1 = "roland1topic/subscriptions/roland1subscription1";
