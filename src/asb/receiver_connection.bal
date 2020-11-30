@@ -10,6 +10,7 @@ public class ReceiverConnection{
     public isolated function init(ConnectionConfiguration connectionConfiguration) {
         self.connectionString = connectionConfiguration.connectionString;
         self.entityPath = connectionConfiguration.entityPath;
+        var receiver = createReceiverConnection(java:fromString(self.connectionString),java:fromString(self.entityPath));
         self.asbReceiverConnection = <handle> createReceiverConnection(java:fromString(self.connectionString),java:fromString(self.entityPath));
     }
 
@@ -37,6 +38,10 @@ public class ReceiverConnection{
 
     public isolated function receiveMessages() returns Messages|error {
         return receiveMessages(self.asbReceiverConnection);
+    }
+
+    public isolated function receiveBatchMessage(int maxMessageCount) returns Messages|error {
+        return receiveBatchMessage(self.asbReceiverConnection, maxMessageCount);
     }
 
     isolated function getAsbReceiverConnection() returns handle {
@@ -72,5 +77,10 @@ isolated function receiveOneBytesMessageViaReceiverConnectionWithConfigurablePar
 
 isolated function receiveMessages(handle imessageReceiver) returns Messages|error = @java:Method {
     name: "receiveMessages",
+    'class: "com.roland.asb.connection.ConUtils"
+} external;
+
+isolated function receiveBatchMessage(handle imessageReceiver, int maxMessageCount) returns Messages|error = @java:Method {
+    name: "receiveBatchMessage",
     'class: "com.roland.asb.connection.ConUtils"
 } external;

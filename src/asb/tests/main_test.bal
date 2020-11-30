@@ -27,6 +27,7 @@ map<string> parameters = {contentType: "application/json", messageId: "one", to:
 map<string> parameters2 = {contentType: "application/json", messageId: "two", to: "sanju", replyTo: "carol", label: "a1", sessionId: "b1", correlationId: "c1", timeToLive: "2"};
 map<string> properties = {a: "nimal", b: "saman"};
 map<string> parameters1 = {contentType: "application/json", messageId: "one"};
+map<string> parameters3 = {contentType: "application/json"};
 string asyncConsumerMessage = "";
 
 # Before Suite Function
@@ -66,7 +67,7 @@ public function testReceieverConnection() {
 }
 
 # Test send to queue operation
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testSendToQueueOperation() {
     log:printInfo("Creating Asb sender connection.");
     SenderConnection? senderConnection = new ({connectionString: connectionString, entityPath: queuePath});
@@ -86,7 +87,7 @@ function testSendToQueueOperation() {
 }
 
 # Test receive from queue operation
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testReceiveFromQueueOperation() {
     log:printInfo("Creating Asb receiver connection.");
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
@@ -170,6 +171,58 @@ service {
     }
 };
 
+# Test send batch to queue operation
+@test:Config{enable: true}
+function testSendBatchToQueueOperation() {
+    log:printInfo("Creating Asb sender connection.");
+    SenderConnection? senderConnection = new ({connectionString: connectionString, entityPath: queuePath});
+
+    if (senderConnection is SenderConnection) {
+        log:printInfo("Sending via Asb sender connection.");
+        checkpanic senderConnection.sendBatchMessage(stringArrayContent, parameters3, properties, maxMessageCount);
+    } else {
+        test:assertFail("Asb sender connection creation failed.");
+    }
+
+    if (senderConnection is SenderConnection) {
+        log:printInfo("Closing Asb sender connection.");
+        checkpanic senderConnection.closeSenderConnection();
+    }
+}
+
+# Test receive batch from queue operation
+@test:Config{dependsOn: ["testSendBatchToQueueOperation"], enable: true}
+function testReceiveBatchFromQueueOperation() {
+    log:printInfo("Creating Asb receiver connection.");
+    ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
+
+    if (receiverConnection is ReceiverConnection) {
+        log:printInfo("Receiving from Asb receiver connection.");
+        var messageReceived = receiverConnection.receiveBatchMessage(maxMessageCount);
+        if(messageReceived is Messages) {
+            int val = messageReceived.getDeliveryTag();
+            log:printInfo("No. of messages received : " + val.toString());
+            Message[] messageReceived1 = messageReceived.getMessages();
+            string messageReceived2 =  checkpanic messageReceived1[0].getTextContent1();
+            log:printInfo("Message1 content : " + messageReceived2);
+            string messageReceived3 =  checkpanic messageReceived1[1].getTextContent1();
+            log:printInfo("Message2 content : " + messageReceived3);
+            string messageReceived4 =  checkpanic messageReceived1[2].getTextContent1();
+            log:printInfo("Message3 content : " + messageReceived4);
+        } 
+        if (messageReceived is error) {
+            log:printInfo("messageReceived");
+        }
+    } else {
+        test:assertFail("Asb receiver connection creation failed.");
+    }
+
+    if (receiverConnection is ReceiverConnection) {
+        log:printInfo("Closing Asb receiver connection.");
+        checkpanic receiverConnection.closeReceiverConnection();
+    }
+}
+
 # Test send to topic operation
 @test:Config{enable: false}
 function testSendToTopicOperation() {
@@ -248,6 +301,8 @@ function testReceiveFromSubscriptionOperation() {
         checkpanic receiverConnection3.closeReceiverConnection();
     }
 }
+
+
 
 
 

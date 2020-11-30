@@ -23,7 +23,7 @@ public class SenderConnection{
         return closeSenderConnection(self.asbSenderConnection);
     }
 
-    public isolated function sendBytesMessageViaSenderConnectionWithConfigurableParameters(byte[] content, map<string> parameters,map<string> properties) returns error? {
+    public isolated function sendBytesMessageViaSenderConnectionWithConfigurableParameters(byte[] content, map<string> parameters, map<string> properties) returns error? {
         return sendBytesMessageViaSenderConnectionWithConfigurableParameters(self.asbSenderConnection, content, parameters, properties);
     }
 
@@ -32,6 +32,9 @@ public class SenderConnection{
         return sendBytesMessageWithConfigurableParameters(self.asbSenderConnection, content, java:fromString("content"), java:fromString("content"), java:fromString("content"), java:fromString("content"), java:fromString("content"), java:fromString("content"), java:fromString("content"),m, 1);
     }
 
+    public isolated function sendBatchMessage(string[] content, map<string> parameters, map<string> properties, int maxMessageCount) returns error? {
+        return sendBatchMessage(self.asbSenderConnection, content, parameters, properties, maxMessageCount);
+    }
 }
 
 isolated function createSenderConnection(handle connectionString, handle entityPath) returns handle|error? = @java:Method {
@@ -51,5 +54,10 @@ isolated function sendBytesMessageViaSenderConnectionWithConfigurableParameters(
 
 isolated function sendBytesMessageWithConfigurableParameters(handle imessageSender, byte[] content,handle contentType, handle messageId, handle to, handle replyTo, handle label, handle sessionId, handle correlationId, map<string> properties, int timeToLive) returns error? = @java:Method {
     name: "sendBytesMessageWithConfigurableParameters",
+    'class: "com.roland.asb.connection.ConUtils"
+} external;
+
+isolated function sendBatchMessage(handle imessageSender, string[] content, map<string> parameters, map<string> properties, int maxMessageCount) returns error? = @java:Method {
+    name: "sendBatchMessage",
     'class: "com.roland.asb.connection.ConUtils"
 } external;
