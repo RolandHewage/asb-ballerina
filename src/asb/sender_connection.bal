@@ -32,6 +32,13 @@ public class SenderConnection{
         return sendBytesMessageWithConfigurableParameters(self.asbSenderConnection, content, java:fromString("content"), java:fromString("content"), java:fromString("content"), java:fromString("content"), java:fromString("content"), java:fromString("content"), java:fromString("content"),m, 1);
     }
 
+    # Send batch of messages to queue with a content and optional parameters
+    #
+    # + content - MessageBody content
+    # + parameters - Optional Message parameters 
+    # + properties - Message properties
+    # + maxMessageCount - Maximum no. of messages in a batch
+    # + return - An `asb:Error` if failed to send message or else `()`
     public isolated function sendBatchMessage(string[] content, map<string> parameters, map<string> properties, int maxMessageCount) returns error? {
         return sendBatchMessage(self.asbSenderConnection, content, parameters, properties, maxMessageCount);
     }

@@ -36,16 +36,30 @@ public class ReceiverConnection{
         return receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters(self.asbReceiverConnection);
     }
 
+    # Receive messages from queue.
+    # 
+    # + return - A Messages object with an array of Message objects
     public isolated function receiveMessages() returns Messages|error {
         return receiveMessages(self.asbReceiverConnection);
     }
 
+    # Receive batch of messages from queue.
+    # 
+    # + maxMessageCount - Maximum no. of messages in a batch
+    # + return - A Message object
     public isolated function receiveBatchMessage(int maxMessageCount) returns Messages|error {
         return receiveBatchMessage(self.asbReceiverConnection, maxMessageCount);
     }
 
     isolated function getAsbReceiverConnection() returns handle {
         return self.asbReceiverConnection;
+    }
+
+    # Complete Messages from Queue or Subscription based on messageLockToken.
+    # 
+    # + return - An `asb:Error` if failed to complete messages or else `()`
+    public isolated function completeMessages() returns error? {
+        return completeMessages(self.asbReceiverConnection);
     }
 
 }
@@ -82,5 +96,10 @@ isolated function receiveMessages(handle imessageReceiver) returns Messages|erro
 
 isolated function receiveBatchMessage(handle imessageReceiver, int maxMessageCount) returns Messages|error = @java:Method {
     name: "receiveBatchMessage",
+    'class: "com.roland.asb.connection.ConUtils"
+} external;
+
+isolated function completeMessages(handle imessageReceiver) returns error? = @java:Method {
+    name: "completeMessages",
     'class: "com.roland.asb.connection.ConUtils"
 } external;

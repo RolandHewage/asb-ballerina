@@ -191,7 +191,7 @@ function testSendBatchToQueueOperation() {
 }
 
 # Test receive batch from queue operation
-@test:Config{dependsOn: ["testSendBatchToQueueOperation"], enable: true}
+@test:Config{dependsOn: ["testSendBatchToQueueOperation"], enable: false}
 function testReceiveBatchFromQueueOperation() {
     log:printInfo("Creating Asb receiver connection.");
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
@@ -213,6 +213,25 @@ function testReceiveBatchFromQueueOperation() {
         if (messageReceived is error) {
             log:printInfo("messageReceived");
         }
+    } else {
+        test:assertFail("Asb receiver connection creation failed.");
+    }
+
+    if (receiverConnection is ReceiverConnection) {
+        log:printInfo("Closing Asb receiver connection.");
+        checkpanic receiverConnection.closeReceiverConnection();
+    }
+}
+
+# Test complete Messages from queue operation
+@test:Config{enable: true}
+function testCompleteMessagesFromQueueOperation() {
+    log:printInfo("Creating Asb receiver connection.");
+    ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
+
+    if (receiverConnection is ReceiverConnection) {
+        log:printInfo("Completing from Asb receiver connection.");
+        checkpanic receiverConnection.completeMessages();
     } else {
         test:assertFail("Asb receiver connection creation failed.");
     }
