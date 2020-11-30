@@ -302,3 +302,11 @@ org.ballerinalang.jvm.util.exceptions.BallerinaException: Test [testReceiveFromS
 	at org.ballerinalang.test.runtime.Main.startTestSuit(Main.java:60)
 	at org.ballerinalang.test.runtime.Main.main(Main.java:52)
  
+[2020-11-30 17:24:29,509] SEVERE {b7a.log.crash} - Test [testCompleteOneMessageFromSubscriptionOperation] depends on function [testSendToQueueOperation], but it couldn't be found. 
+org.ballerinalang.jvm.util.exceptions.BallerinaException: Test [testCompleteOneMessageFromSubscriptionOperation] depends on function [testSendToQueueOperation], but it couldn't be found.
+	at org.ballerinalang.test.runtime.BTestRunner.checkCyclicDependencies(BTestRunner.java:176)
+	at org.ballerinalang.test.runtime.BTestRunner.runTest(BTestRunner.java:102)
+	at org.ballerinalang.test.runtime.util.TesterinaUtils.executeTests(TesterinaUtils.java:74)
+	at org.ballerinalang.test.runtime.Main.startTestSuit(Main.java:60)
+	at org.ballerinalang.test.runtime.Main.main(Main.java:52)
+ 
