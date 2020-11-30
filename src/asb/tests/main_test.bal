@@ -67,7 +67,7 @@ public function testReceieverConnection() {
 }
 
 # Test send to queue operation
-@test:Config{enable: false}
+@test:Config{enable: true}
 function testSendToQueueOperation() {
     log:printInfo("Creating Asb sender connection.");
     SenderConnection? senderConnection = new ({connectionString: connectionString, entityPath: queuePath});
@@ -87,8 +87,65 @@ function testSendToQueueOperation() {
 }
 
 # Test receive from queue operation
-@test:Config{enable: false}
+@test:Config{enable: true}
 function testReceiveFromQueueOperation() {
+    log:printInfo("Creating Asb receiver connection.");
+    ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
+
+    if (receiverConnection is ReceiverConnection) {
+        log:printInfo("Receiving from Asb receiver connection 1.");
+        Message|error messageReceived = receiverConnection.receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters();
+        Message|error jsonMessageReceived = receiverConnection.receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters();
+        if (messageReceived is Message && jsonMessageReceived is Message) {
+            string messageRead = checkpanic messageReceived.getTextContent1();
+            log:printInfo("Reading Received Message : " + messageRead);
+            json jsonMessageRead = checkpanic jsonMessageReceived.getJSONContent();
+            log:printInfo("Reading Received Message : " + jsonMessageRead.toString());
+        } else {
+            test:assertFail("Receiving message via Asb receiver connection failed.");
+        }
+    } else {
+        test:assertFail("Asb receiver connection creation failed.");
+    }
+
+    // if (receiverConnection is ReceiverConnection) {
+    //     log:printInfo("Receiving from Asb receiver connection.");
+    //     var messageReceived = receiverConnection.receiveMessages();
+    //     if(messageReceived is Messages) {
+    //         int val = messageReceived.getDeliveryTag();
+    //         log:printInfo(val);
+    //         Message[] messageReceived1 = messageReceived.getMessages();
+    //         string messageReceived2 =  checkpanic messageReceived1[1].getTextContent1();
+    //         log:printInfo(messageReceived2);
+    //     } 
+    //     if (messageReceived is error) {
+    //         log:printInfo("messageReceived");
+    //     }
+        
+    //     // Message messageReceived = checkpanic receiverConnection.receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters();
+    //     // string messageReceived1 = checkpanic messageReceived.getTextContent1();
+    //     // log:printInfo(messageReceived1);
+    //     // var messages = receiverConnection.receiveBytesMessageViaReceiverConnectionWithConfigurableParameters();
+    //     // if(messages is handle) {
+    //     //     checkpanic receiverConnection.checkMessage(messages);
+    //     //     string messageReceived = checkpanic receiverConnection.getTextContent(byteContent);
+    //     //     log:printInfo(messageReceived);
+    //     // } else {
+    //     //     test:assertFail("Receiving message via Asb receiver connection failed.");
+    //     // }
+    // } else {
+    //     test:assertFail("Asb receiver connection creation failed.");
+    // }
+
+    if (receiverConnection is ReceiverConnection) {
+        log:printInfo("Closing Asb receiver connection.");
+        checkpanic receiverConnection.closeReceiverConnection();
+    }
+}
+
+# Test receive from queue operation
+@test:Config{enable: false}
+function testReceiveMessagesFromQueueOperation() {
     log:printInfo("Creating Asb receiver connection.");
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
 
@@ -97,26 +154,15 @@ function testReceiveFromQueueOperation() {
         var messageReceived = receiverConnection.receiveMessages();
         if(messageReceived is Messages) {
             int val = messageReceived.getDeliveryTag();
-            log:printInfo(val);
-            Message[] messageReceived1 = messageReceived.getMessages();
-            string messageReceived2 =  checkpanic messageReceived1[1].getTextContent1();
-            log:printInfo(messageReceived2);
-        } 
-        if (messageReceived is error) {
-            log:printInfo("messageReceived");
+            log:printInfo("No. of messages received : " + val.toString());
+            Message[] messages = messageReceived.getMessages();
+            string messageReceived1 =  checkpanic messages[0].getTextContent1();
+            log:printInfo("Message1 content : " +messageReceived1);
+            json messageReceived2 =  checkpanic messages[1].getJSONContent();
+            log:printInfo("Message2 content : " +messageReceived2.toString());
+        } else {
+            test:assertFail("Asb sender connection creation failed.");
         }
-        
-        // Message messageReceived = checkpanic receiverConnection.receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters();
-        // string messageReceived1 = checkpanic messageReceived.getTextContent1();
-        // log:printInfo(messageReceived1);
-        // var messages = receiverConnection.receiveBytesMessageViaReceiverConnectionWithConfigurableParameters();
-        // if(messages is handle) {
-        //     checkpanic receiverConnection.checkMessage(messages);
-        //     string messageReceived = checkpanic receiverConnection.getTextContent(byteContent);
-        //     log:printInfo(messageReceived);
-        // } else {
-        //     test:assertFail("Receiving message via Asb receiver connection failed.");
-        // }
     } else {
         test:assertFail("Asb receiver connection creation failed.");
     }
@@ -291,7 +337,7 @@ function testAbandonMessageFromQueueOperation() {
 }
 
 # Test send to topic operation
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testSendToTopicOperation() {
     log:printInfo("Creating Asb sender connection.");
     SenderConnection? senderConnection = new ({connectionString: connectionString, entityPath: topicPath});
