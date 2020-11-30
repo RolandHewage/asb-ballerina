@@ -86,7 +86,7 @@ function testSendToQueueOperation() {
     }
 }
 
-# Test receive from queue operation
+# Test receive one message from queue operation
 @test:Config{enable: true}
 function testReceiveFromQueueOperation() {
     log:printInfo("Creating Asb receiver connection.");
@@ -143,7 +143,7 @@ function testReceiveFromQueueOperation() {
     }
 }
 
-# Test receive from queue operation
+# Test receive messages from queue operation
 @test:Config{enable: false}
 function testReceiveMessagesFromQueueOperation() {
     log:printInfo("Creating Asb receiver connection.");
