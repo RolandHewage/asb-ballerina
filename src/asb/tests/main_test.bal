@@ -86,14 +86,14 @@ function testSendToQueueOperation() {
 }
 
 # Test receive from queue operation
-@test:Config{enable: false}
+@test:Config{enable: true}
 function testReceiveFromQueueOperation() {
     log:printInfo("Creating Asb receiver connection.");
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
 
     if (receiverConnection is ReceiverConnection) {
         log:printInfo("Receiving from Asb receiver connection.");
-        var messageReceived = receiverConnection.receiveTwoBytesMessageViaReceiverConnectionWithConfigurableParameters();
+        var messageReceived = receiverConnection.receiveMessages();
         if(messageReceived is Messages) {
             int val = messageReceived.getDeliveryTag();
             log:printInfo(val);
@@ -127,7 +127,7 @@ function testReceiveFromQueueOperation() {
 }
 
 # Test Listener capabilities
-@test:Config {dependsOn: ["testSendToQueueOperation"], enable: true}
+@test:Config {dependsOn: ["testSendToQueueOperation"], enable: false}
 public function testAsyncConsumer() {
 
     ConnectionConfiguration config = {
