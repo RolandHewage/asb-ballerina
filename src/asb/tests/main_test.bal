@@ -140,7 +140,7 @@ public function testAsyncConsumer() {
     if (channelListener is Listener) {
         checkpanic channelListener.__attach(asyncTestService);
         checkpanic channelListener.__start();
-        // log:printInfo("start");
+        log:printInfo("start");
         runtime:sleep(15000);
         log:printInfo("end");
         checkpanic channelListener.__detach(asyncTestService);
