@@ -1,30 +1,46 @@
 import ballerina/java;
 
-public class ReceiverConnection{
+# Represents a single network receiver connection to the RabbitMQ broker.
+public class ReceiverConnection {
 
     handle asbReceiverConnection;
 
     private string connectionString;
     private string entityPath;
 
+    # Initiates an Asb Receiver Connection using the given connection configuration.
+    # 
+    # + connectionConfiguration - Configurations used to create a `asb:Connection`
     public isolated function init(ConnectionConfiguration connectionConfiguration) {
         self.connectionString = connectionConfiguration.connectionString;
         self.entityPath = connectionConfiguration.entityPath;
-        var receiver = createReceiverConnection(java:fromString(self.connectionString),java:fromString(self.entityPath));
-        self.asbReceiverConnection = <handle> createReceiverConnection(java:fromString(self.connectionString),java:fromString(self.entityPath));
+        var receiver = createReceiverConnection(java:fromString(self.connectionString), 
+            java:fromString(self.entityPath));
+        self.asbReceiverConnection = <handle> createReceiverConnection(java:fromString(self.connectionString), 
+            java:fromString(self.entityPath));
     }
 
-    public isolated function createReceiverConnection(ConnectionConfiguration connectionConfiguration) returns handle|error? {
+    # Creates a Asb Receiver Connection using the given connection parameters.
+    # 
+    # + connectionConfiguration - Configurations used to create a `asb:Connection`
+    # + return - An `asb:Error` if failed to create connection or else `()`
+    public isolated function createReceiverConnection(ConnectionConfiguration connectionConfiguration) 
+        returns handle|error? {
         self.connectionString = connectionConfiguration.connectionString;
         self.entityPath = connectionConfiguration.entityPath;
-        self.asbReceiverConnection = <handle> createReceiverConnection(java:fromString(self.connectionString),java:fromString(self.entityPath));
+        self.asbReceiverConnection = <handle> createReceiverConnection(java:fromString(self.connectionString), 
+            java:fromString(self.entityPath));
     }
 
+    # Closes the Asb Receiver Connection using the given connection parameters.
+    #
+    # + return - An `asb:Error` if failed to close connection or else `()`
     public isolated function closeReceiverConnection() returns error? {
         return closeReceiverConnection(self.asbReceiverConnection);
     }
 
-    public isolated function receiveBytesMessageViaReceiverConnectionWithConfigurableParameters() returns handle|error? {
+    public isolated function receiveBytesMessageViaReceiverConnectionWithConfigurableParameters() 
+        returns handle|error? {
         return receiveBytesMessageViaReceiverConnectionWithConfigurableParameters(self.asbReceiverConnection);
     }
 
@@ -32,7 +48,11 @@ public class ReceiverConnection{
         checkpanic checkMessage(imessages);
     }
 
-    public isolated function receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters() returns Message|error {
+    # Receive Message from queue.
+    # 
+    # + return - A Message object
+    public isolated function receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters() 
+        returns Message|error {
         return receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters(self.asbReceiverConnection);
     }
 
@@ -75,10 +95,10 @@ public class ReceiverConnection{
     public isolated function abandonMessage() returns error? {
         return abandonMessage(self.asbReceiverConnection);
     }
-
 }
 
-isolated function createReceiverConnection(handle connectionString, handle entityPath) returns handle|error? = @java:Method {
+isolated function createReceiverConnection(handle connectionString, handle entityPath) 
+    returns handle|error? = @java:Method {
     name: "createReceiverConnection",
     'class: "com.roland.asb.connection.ConUtils"
 } external;
@@ -88,7 +108,8 @@ isolated function closeReceiverConnection(handle imessageSender) returns error? 
     'class: "com.roland.asb.connection.ConUtils"
 } external;
 
-isolated function receiveBytesMessageViaReceiverConnectionWithConfigurableParameters(handle imessageReceiver) returns handle|error? = @java:Method {
+isolated function receiveBytesMessageViaReceiverConnectionWithConfigurableParameters(handle imessageReceiver) 
+    returns handle|error? = @java:Method {
     name: "receiveBytesMessageViaReceiverConnectionWithConfigurableParameters",
     'class: "com.roland.asb.connection.ConUtils"
 } external;
@@ -98,7 +119,8 @@ isolated function checkMessage(handle imessage) returns error? = @java:Method {
     'class: "com.roland.asb.connection.ConUtils"
 } external;
 
-isolated function receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters(handle imessageReceiver) returns Message|error = @java:Method {
+isolated function receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters(handle imessageReceiver) 
+    returns Message|error = @java:Method {
     name: "receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters",
     'class: "com.roland.asb.connection.ConUtils"
 } external;
@@ -108,7 +130,8 @@ isolated function receiveMessages(handle imessageReceiver) returns Messages|erro
     'class: "com.roland.asb.connection.ConUtils"
 } external;
 
-isolated function receiveBatchMessage(handle imessageReceiver, int maxMessageCount) returns Messages|error = @java:Method {
+isolated function receiveBatchMessage(handle imessageReceiver, int maxMessageCount) 
+    returns Messages|error = @java:Method {
     name: "receiveBatchMessage",
     'class: "com.roland.asb.connection.ConUtils"
 } external;
