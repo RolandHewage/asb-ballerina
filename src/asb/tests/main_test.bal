@@ -75,8 +75,8 @@ function testSendToQueueOperation() {
 
     if (senderConnection is SenderConnection) {
         log:printInfo("Sending via Asb sender connection.");
-        checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContent, parameters1, properties);
-        checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContentFromJson, parameters2, properties);
+        checkpanic senderConnection.sendMessageWithConfigurableParameters(byteContent, parameters1, properties);
+        checkpanic senderConnection.sendMessageWithConfigurableParameters(byteContentFromJson, parameters2, properties);
     } else {
         test:assertFail("Asb sender connection creation failed.");
     }
@@ -316,8 +316,8 @@ function testSendToTopicOperation() {
 
     if (senderConnection is SenderConnection) {
         log:printInfo("Sending via Asb sender connection.");
-        checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContent, parameters1, properties);
-        checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContentFromJson, parameters2, properties);
+        checkpanic senderConnection.sendMessageWithConfigurableParameters(byteContent, parameters1, properties);
+        checkpanic senderConnection.sendMessageWithConfigurableParameters(byteContentFromJson, parameters2, properties);
     } else {
         test:assertFail("Asb sender connection creation failed.");
     }
@@ -698,7 +698,7 @@ function testSendToTopicOperation1() {
 
     if (senderConnection is SenderConnection) {
         log:printInfo("Sending via Asb sender connection.");
-        checkpanic senderConnection.sendBytesMessageViaSenderConnectionWithConfigurableParameters(byteContentFromJson, parameters, properties);
+        checkpanic senderConnection.sendMessageWithConfigurableParameters(byteContentFromJson, parameters, properties);
     } else {
         test:assertFail("Asb sender connection creation failed.");
     }

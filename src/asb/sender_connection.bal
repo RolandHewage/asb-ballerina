@@ -42,7 +42,7 @@ public class SenderConnection {
     # + parameters - Optional Message parameters 
     # + properties - Message properties
     # + return - An `asb:Error` if failed to send message or else `()`
-    public isolated function sendBytesMessageViaSenderConnectionWithConfigurableParameters(byte[] content, 
+    public isolated function sendMessageWithConfigurableParameters(byte[] content, 
         map<string> parameters, map<string> properties) returns error? {
         return sendBytesMessageViaSenderConnectionWithConfigurableParameters(self.asbSenderConnection, content, 
             parameters, properties);
