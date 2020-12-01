@@ -96,14 +96,14 @@ isolated function closeSenderConnection(handle imessageSender) returns error? = 
 
 isolated function sendMessageWithConfigurableParameters(handle imessageSender, byte[] content, map<string> parameters, 
     map<string> properties) returns error? = @java:Method {
-    name: "sendBytesMessageViaSenderConnectionWithConfigurableParameters",
+    name: "sendMessageWithConfigurableParameters",
     'class: "com.roland.asb.connection.ConUtils"
 } external;
 
 isolated function sendMessage(handle imessageSender, byte[] content, handle contentType, handle messageId, handle to, 
     handle replyTo, handle label, handle sessionId, handle correlationId, map<string> properties, int timeToLive) 
     returns error? = @java:Method {
-    name: "sendBytesMessageWithConfigurableParameters",
+    name: "sendMessage",
     'class: "com.roland.asb.connection.ConUtils"
 } external;
 

@@ -38,15 +38,6 @@ public class ReceiverConnection {
         return closeReceiverConnection(self.asbReceiverConnection);
     }
 
-    public isolated function receiveBytesMessageViaReceiverConnectionWithConfigurableParameters() 
-        returns handle|error? {
-        return receiveBytesMessageViaReceiverConnectionWithConfigurableParameters(self.asbReceiverConnection);
-    }
-
-    public isolated function checkMessage(handle imessages) returns error? {
-        checkpanic checkMessage(imessages);
-    }
-
     # Receive Message from queue.
     # 
     # + return - A Message object
@@ -93,6 +84,15 @@ public class ReceiverConnection {
     public isolated function abandonMessage() returns error? {
         return abandonMessage(self.asbReceiverConnection);
     }
+
+    public isolated function receiveBytesMessageViaReceiverConnectionWithConfigurableParameters() 
+        returns handle|error? {
+        return receiveBytesMessageViaReceiverConnectionWithConfigurableParameters(self.asbReceiverConnection);
+    }
+
+    public isolated function checkMessage(handle imessages) returns error? {
+        checkpanic checkMessage(imessages);
+    }
 }
 
 isolated function createReceiverConnection(handle connectionString, handle entityPath) 
@@ -106,19 +106,8 @@ isolated function closeReceiverConnection(handle imessageSender) returns error? 
     'class: "com.roland.asb.connection.ConUtils"
 } external;
 
-isolated function receiveBytesMessageViaReceiverConnectionWithConfigurableParameters(handle imessageReceiver) 
-    returns handle|error? = @java:Method {
-    name: "receiveBytesMessageViaReceiverConnectionWithConfigurableParameters",
-    'class: "com.roland.asb.connection.ConUtils"
-} external;
-
-isolated function checkMessage(handle imessage) returns error? = @java:Method {
-    name: "checkMessage",
-    'class: "com.roland.asb.connection.ConUtils"
-} external;
-
 isolated function receiveMessage(handle imessageReceiver) returns Message|error = @java:Method {
-    name: "receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters",
+    name: "receiveMessage",
     'class: "com.roland.asb.connection.ConUtils"
 } external;
 
@@ -145,5 +134,16 @@ isolated function completeOneMessage(handle imessageReceiver) returns error? = @
 
 isolated function abandonMessage(handle imessageReceiver) returns error? = @java:Method {
     name: "abandonMessage",
+    'class: "com.roland.asb.connection.ConUtils"
+} external;
+
+isolated function receiveBytesMessageViaReceiverConnectionWithConfigurableParameters(handle imessageReceiver) 
+    returns handle|error? = @java:Method {
+    name: "receiveBytesMessageViaReceiverConnectionWithConfigurableParameters",
+    'class: "com.roland.asb.connection.ConUtils"
+} external;
+
+isolated function checkMessage(handle imessage) returns error? = @java:Method {
+    name: "checkMessage",
     'class: "com.roland.asb.connection.ConUtils"
 } external;
