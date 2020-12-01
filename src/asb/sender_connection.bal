@@ -42,10 +42,9 @@ public class SenderConnection {
     # + parameters - Optional Message parameters 
     # + properties - Message properties
     # + return - An `asb:Error` if failed to send message or else `()`
-    public isolated function sendMessageWithConfigurableParameters(byte[] content, 
-        map<string> parameters, map<string> properties) returns error? {
-        return sendBytesMessageViaSenderConnectionWithConfigurableParameters(self.asbSenderConnection, content, 
-            parameters, properties);
+    public isolated function sendMessageWithConfigurableParameters(byte[] content, map<string> parameters, 
+        map<string> properties) returns error? {
+        return sendMessageWithConfigurableParameters(self.asbSenderConnection, content, parameters, properties);
     }
 
     public isolated function sendBytesMessageWithConfigurableParameters(byte[] content) returns error? {
@@ -79,8 +78,8 @@ isolated function closeSenderConnection(handle imessageSender) returns error? = 
     'class: "com.roland.asb.connection.ConUtils"
 } external;
 
-isolated function sendBytesMessageViaSenderConnectionWithConfigurableParameters(handle imessageSender, byte[] content, 
-    map<string> parameters, map<string> properties) returns error? = @java:Method {
+isolated function sendMessageWithConfigurableParameters(handle imessageSender, byte[] content, map<string> parameters, 
+    map<string> properties) returns error? = @java:Method {
     name: "sendBytesMessageViaSenderConnectionWithConfigurableParameters",
     'class: "com.roland.asb.connection.ConUtils"
 } external;
