@@ -51,9 +51,8 @@ public class ReceiverConnection {
     # Receive Message from queue.
     # 
     # + return - A Message object
-    public isolated function receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters() 
-        returns Message|error {
-        return receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters(self.asbReceiverConnection);
+    public isolated function receiveMessage() returns Message|error {
+        return receiveMessage(self.asbReceiverConnection);
     }
 
     # Receive messages from queue.
@@ -119,8 +118,7 @@ isolated function checkMessage(handle imessage) returns error? = @java:Method {
     'class: "com.roland.asb.connection.ConUtils"
 } external;
 
-isolated function receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters(handle imessageReceiver) 
-    returns Message|error = @java:Method {
+isolated function receiveMessage(handle imessageReceiver) returns Message|error = @java:Method {
     name: "receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters",
     'class: "com.roland.asb.connection.ConUtils"
 } external;
