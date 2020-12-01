@@ -2,14 +2,16 @@ import ballerina/io;
 import ballerina/test;
 import ballerina/log;
 import ballerina/runtime;
+import ballerina/system;
+import ballerina/config;
 
 // Connection Configuration
-string connectionString = "<SAS>";
-string queuePath = "roland1queue";
-string topicPath = "roland1topic";
-string subscriptionPath1 = "roland1topic/subscriptions/roland1subscription1";
-string subscriptionPath2 = "roland1topic/subscriptions/roland1subscription2";
-string subscriptionPath3 = "roland1topic/subscriptions/roland1subscription3";
+string connectionString = getConfigValue("CONNECTION_STRING");
+string queuePath = getConfigValue("QUEUE_PATH");
+string topicPath = getConfigValue("TOPIC_PATH");
+string subscriptionPath1 = getConfigValue("SUBSCRIPTION_PATH1");
+string subscriptionPath2 = getConfigValue("SUBSCRIPTION_PATH2");
+string subscriptionPath3 = getConfigValue("SUBSCRIPTION_PATH3");
 int maxMessageCount = 3;
 
 SenderConnection? senderConnection = ();
@@ -23,11 +25,13 @@ byte[] byteContentFromJson = jsonContent.toJsonString().toBytes();
 json[] jsonArrayContent = [{name: "apple", color: "red", price: 5.36}, {first: "John", last: "Pala"}];
 string[] stringArrayContent = ["apple","mango","lemon","orange"];
 int[] integerArrayContent = [4, 5, 6];
-map<string> parameters = {contentType: "application/json", messageId: "one", to: "sanju", replyTo: "carol", label: "a1", sessionId: "b1", correlationId: "c1", timeToLive: "2"};
-map<string> parameters2 = {contentType: "application/json", messageId: "two", to: "sanju", replyTo: "carol", label: "a1", sessionId: "b1", correlationId: "c1", timeToLive: "2"};
-map<string> properties = {a: "nimal", b: "saman"};
+map<string> parameters = {contentType: "application/json", messageId: "one", to: "sanju", replyTo: "carol", label: "a1", 
+    sessionId: "b1", correlationId: "c1", timeToLive: "2"};
 map<string> parameters1 = {contentType: "application/json", messageId: "one"};
+map<string> parameters2 = {contentType: "application/json", messageId: "two", to: "sanju", replyTo: "carol", 
+    label: "a1", sessionId: "b1", correlationId: "c1", timeToLive: "2"};
 map<string> parameters3 = {contentType: "application/json"};
+map<string> properties = {a: "nimal", b: "saman"};
 string asyncConsumerMessage = "";
 
 # Before Suite Function
@@ -87,7 +91,7 @@ function testSendToQueueOperation() {
 }
 
 # Test receive one message from queue operation
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testReceiveFromQueueOperation() {
     log:printInfo("Creating Asb receiver connection.");
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
@@ -107,20 +111,6 @@ function testReceiveFromQueueOperation() {
     } else {
         test:assertFail("Asb receiver connection creation failed.");
     }
-
-    // if (receiverConnection is ReceiverConnection) {
-    //     log:printInfo("Receiving from Asb receiver connection.");
-    //     var messageReceived = receiverConnection.receiveMessages();
-    //     if(messageReceived is Messages) {
-    //         int val = messageReceived.getDeliveryTag();
-    //         log:printInfo(val);
-    //         Message[] messageReceived1 = messageReceived.getMessages();
-    //         string messageReceived2 =  checkpanic messageReceived1[1].getTextContent1();
-    //         log:printInfo(messageReceived2);
-    //     } 
-    //     if (messageReceived is error) {
-    //         log:printInfo("messageReceived");
-    //     }
         
     //     // Message messageReceived = checkpanic receiverConnection.receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters();
     //     // string messageReceived1 = checkpanic messageReceived.getTextContent1();
@@ -144,7 +134,7 @@ function testReceiveFromQueueOperation() {
 }
 
 # Test receive messages from queue operation
-@test:Config{enable: false}
+@test:Config{enable: true}
 function testReceiveMessagesFromQueueOperation() {
     log:printInfo("Creating Asb receiver connection.");
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
@@ -698,6 +688,10 @@ function testAbandonMessageFromSubscriptionOperation() {
         log:printInfo("Closing Asb receiver connection 3.");
         checkpanic receiverConnection3.closeReceiverConnection();
     }
+}
+
+function getConfigValue(string key) returns string {
+    return (system:getEnv(key) != "") ? system:getEnv(key) : config:getAsString(key);
 }
 
 
