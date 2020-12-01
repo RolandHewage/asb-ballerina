@@ -37,8 +37,6 @@ string asyncConsumerMessage = "";
 # Before Suite Function
 @test:BeforeSuite
 function beforeSuiteFunc() {
-    io:println("I'm the before suite function!");
-
     log:printInfo("Creating a ballerina Asb Sender connection.");
     SenderConnection? con = new ({connectionString: connectionString, entityPath: queuePath});
     senderConnection = con;
@@ -895,8 +893,6 @@ function testAutoForward() {
 # After Suite Function
 @test:AfterSuite {}
 function afterSuiteFunc() {
-    io:println("I'm the after suite function!");
-
     SenderConnection? con = senderConnection;
     if (con is SenderConnection) {
         log:printInfo("Closing the Sender Connection");
