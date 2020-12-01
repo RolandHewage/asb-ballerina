@@ -94,7 +94,7 @@ function testReceiveFromQueueOperation() {
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
 
     if (receiverConnection is ReceiverConnection) {
-        log:printInfo("Receiving from Asb receiver connection 1.");
+        log:printInfo("Receiving from Asb receiver connection.");
         Message|error messageReceived = receiverConnection.receiveMessage();
         Message|error jsonMessageReceived = receiverConnection.receiveMessage();
         if (messageReceived is Message && jsonMessageReceived is Message) {
