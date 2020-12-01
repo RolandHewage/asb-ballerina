@@ -6,7 +6,7 @@ public class TestClient{
     function init(){
 
         // // Connection Configuration
-        // string connectionString = "Endpoint=sb://roland1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=OckfvtMMw6GHIftqU0Jj0A0jy0uIUjufhV5dCToiGJk=";
+        // string connectionString = "<SAS>";
         // string content = "This is My Message Body"; 
         // string queuePath = "roland1queue";
         // string topicPath = "roland1topic";
