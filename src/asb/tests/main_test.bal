@@ -111,22 +111,7 @@ function testReceiveFromQueueOperation() {
     } else {
         test:assertFail("Asb receiver connection creation failed.");
     }
-        
-    //     // Message messageReceived = checkpanic receiverConnection.receiveOneBytesMessageViaReceiverConnectionWithConfigurableParameters();
-    //     // string messageReceived1 = checkpanic messageReceived.getTextContent1();
-    //     // log:printInfo(messageReceived1);
-    //     // var messages = receiverConnection.receiveBytesMessageViaReceiverConnectionWithConfigurableParameters();
-    //     // if(messages is handle) {
-    //     //     checkpanic receiverConnection.checkMessage(messages);
-    //     //     string messageReceived = checkpanic receiverConnection.getTextContent(byteContent);
-    //     //     log:printInfo(messageReceived);
-    //     // } else {
-    //     //     test:assertFail("Receiving message via Asb receiver connection failed.");
-    //     // }
-    // } else {
-    //     test:assertFail("Asb receiver connection creation failed.");
-    // }
-
+    
     if (receiverConnection is ReceiverConnection) {
         log:printInfo("Closing Asb receiver connection.");
         checkpanic receiverConnection.closeReceiverConnection();
