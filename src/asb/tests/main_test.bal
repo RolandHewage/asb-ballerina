@@ -111,7 +111,7 @@ function testReceiveFromQueueOperation() {
     } else {
         test:assertFail("Asb receiver connection creation failed.");
     }
-    
+
     if (receiverConnection is ReceiverConnection) {
         log:printInfo("Closing Asb receiver connection.");
         checkpanic receiverConnection.closeReceiverConnection();
@@ -119,7 +119,7 @@ function testReceiveFromQueueOperation() {
 }
 
 # Test receive messages from queue operation
-@test:Config{enable: true}
+@test:Config{enable: false}
 function testReceiveMessagesFromQueueOperation() {
     log:printInfo("Creating Asb receiver connection.");
     ReceiverConnection? receiverConnection = new ({connectionString: connectionString, entityPath: queuePath});
@@ -149,7 +149,7 @@ function testReceiveMessagesFromQueueOperation() {
 }
 
 # Test Listener capabilities
-@test:Config {dependsOn: ["testSendToQueueOperation"], enable: false}
+@test:Config {dependsOn: ["testSendToQueueOperation"], enable: true}
 public function testAsyncConsumer() {
 
     ConnectionConfiguration config = {
@@ -163,7 +163,7 @@ public function testAsyncConsumer() {
         checkpanic channelListener.__attach(asyncTestService);
         checkpanic channelListener.__start();
         log:printInfo("start");
-        runtime:sleep(15000);
+        runtime:sleep(20000);
         log:printInfo("end");
         checkpanic channelListener.__detach(asyncTestService);
         // checkpanic channelListener.__gracefulStop();
