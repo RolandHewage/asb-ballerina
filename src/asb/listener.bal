@@ -4,7 +4,6 @@ import ballerina/java;
 # Ballerina Asb Message Listener.
 # Provides a listener to consume messages from the Azure Service Bus.
 public class Listener {
-
     *lang:Listener;
 
     private ReceiverConnection receiverConnection;
