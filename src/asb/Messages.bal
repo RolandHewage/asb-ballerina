@@ -1,5 +1,4 @@
-// import ballerina/java;
-
+# Provides the functionality to handle the messages received by the consumer services.
 public class Messages {
     private int deliveryTag = -1;
     private Message[] messages = [];

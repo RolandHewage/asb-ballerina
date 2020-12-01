@@ -1,6 +1,5 @@
 import ballerina/java;
 
-
 # Provides the functionality to manipulate the messages received by the consumer services.
 public class Message {
     private byte[] messageContent = [];
