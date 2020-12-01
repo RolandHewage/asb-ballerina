@@ -1,6 +1,8 @@
 import ballerina/lang.'object as lang;
 import ballerina/java;
 
+# Ballerina Asb Message Listener.
+# Provides a listener to consume messages from the Azure Service Bus.
 public class Listener {
 
     *lang:Listener;
@@ -87,11 +89,23 @@ isolated function abortConnection(Listener lis) returns Error? =
     'class: "com.roland.asb.connection.ListenerUtils"
 } external;
 
+# Configurations used to create a `asb:Connection`.
+#
+# + connectionString - Service bus connection string with Shared Access Signatures
+#                      ConnectionString format: 
+#                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+#                      SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY or  
+#                      Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;
+#                      SharedAccessSignatureToken=SHARED_ACCESS_SIGNATURE_TOKEN
+# + queueName - Entitypath to the message broker resource
 public type QueueConfiguration record {|
     string connectionString;
     string queueName;
 |};
 
+# Service configurations used to create a `asb:Connection`.
+# 
+# + queueConfig - Configurations used to create a `asb:Connection`
 public type asbServiceConfig record {|
     QueueConfiguration queueConfig;
 |};
